@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
 
 const connectDB = require('./config/db');
 const logger = require('./middleware/logger');
@@ -22,6 +24,14 @@ const app = express();
 connectDB();
 
 /* =========================
+   ENSURE UPLOADS DIRECTORY EXISTS
+========================= */
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+/* =========================
    MIDDLEWARE
 ========================= */
 // CORS Configuration
@@ -34,6 +44,9 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(logger);
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 /* =========================
    ROUTES

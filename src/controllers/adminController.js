@@ -2,7 +2,10 @@ const Ticket = require('../models/Ticket');
 
 exports.getAllTickets = async (req, res, next) => {
   try {
-    const tickets = await Ticket.find().populate('createdBy', 'name email').populate('assignedTo', 'name email');
+    const tickets = await Ticket.find()
+      .populate('createdBy', 'name email')
+      .populate('assignedTo', 'name email')
+      .populate('attachments');
     res.json(tickets);
   } catch (err) {
     next(err);
@@ -23,6 +26,7 @@ exports.assignTicket = async (req, res, next) => {
     await ticket.save();
     await ticket.populate('createdBy', 'name email');
     await ticket.populate('assignedTo', 'name email');
+    await ticket.populate('attachments');
     
     res.json(ticket);
   } catch (err) {
@@ -46,6 +50,7 @@ exports.replyToTicket = async (req, res, next) => {
     
     await ticket.populate('createdBy', 'name email');
     await ticket.populate('assignedTo', 'name email');
+    await ticket.populate('attachments');
     
     res.json(ticket);
   } catch (err) {

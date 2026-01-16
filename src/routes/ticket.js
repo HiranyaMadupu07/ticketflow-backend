@@ -43,6 +43,7 @@ router.get('/user/:userId', auth, async (req, res) => {
     })
     .populate('createdBy', 'name email')
     .populate('assignedTo', 'name email')
+    .populate('attachments')
     .sort({ createdAt: -1 });
 
     res.json(tickets);
@@ -58,7 +59,8 @@ router.get('/:id', auth, async (req, res) => {
   try {
     const ticket = await Ticket.findById(req.params.id)
       .populate('createdBy', 'name email')
-      .populate('assignedTo', 'name email');
+      .populate('assignedTo', 'name email')
+      .populate('attachments');
 
     if (!ticket) {
       return res.status(404).json({ message: 'Ticket not found' });

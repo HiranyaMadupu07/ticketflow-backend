@@ -16,7 +16,7 @@ const TicketSchema = new mongoose.Schema({
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   conversation: [ConversationSchema],
-  attachments: [{ type: String }],
+  attachments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attachment' }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   resolvedAt: { type: Date }
